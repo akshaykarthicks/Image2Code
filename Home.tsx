@@ -69,13 +69,14 @@ async function generateCodeFromImage(imageBase64, prompt, userInput) {
 
   const result = await ai.models.generateContent({
     model: MODEL_NAME,
-    contents: [finalPrompt, image],
+    contents: [{role: 'user', parts: [{text: finalPrompt}, image]}],
   });
   const response = result.text;
 
   const regex = /```(?:html)?\s*([\s\S]*?)```/g;
   const match = regex.exec(response);
-  const extractedCode = match ? match[1].trim() : response;
+  // Default to an empty string if no code block is found
+  const extractedCode = match ? match[1].trim() : '';
 
   return {
     fullResponse: response,
@@ -210,39 +211,6 @@ After completing the process above, you must generate a SINGLE, COMPLETE HTML co
     } finally {
       setLoading(false);
     }
-  };
-
-  const renderSketch = (code) => {
-    const formattedCodeResponse = `
-      <!DOCTYPE html>
-      <html lang="en">
-      <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=512, initial-scale=1.0">
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
-        <title>p5.js Sketch</title>
-        <style> body {padding: 0; margin: 0;} </style>
-      </head>
-      <body>
-      <script>
-        window.onerror = function(message, source, lineno, colno, error) {
-          document.body.innerHTML += '<h3>🔴Error:</h3><pre>' + message + '</pre>';
-        };
-        ${code}
-      </script>
-      </body>
-      </html>
-    `;
-
-    return (
-      <iframe
-        srcDoc={formattedCodeResponse}
-        title="p5.js Sketch"
-        width="100%"
-        height="300"
-        style={{border: 'none'}}
-      />
-    );
   };
 
   const handleCodeChange = (id, newCode) => {
