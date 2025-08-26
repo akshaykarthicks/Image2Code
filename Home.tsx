@@ -73,7 +73,7 @@ async function generateCodeFromImage(imageBase64, prompt, userInput) {
   });
   const response = result.text;
 
-  const regex = /```(?:javascript|js)?\s*([\s\S]*?)```/g;
+  const regex = /```(?:html)?\s*([\s\S]*?)```/g;
   const match = regex.exec(response);
   const extractedCode = match ? match[1].trim() : response;
 
@@ -101,34 +101,33 @@ export default function Home() {
       setPrompt(savedPrompt);
     } else {
       const defaultPrompt =
-        `You are a creative coding expert who turns images into clever code sketches using p5.js. A user will upload an image and you will generate an interactive p5.js sketch that represents the image. The code sketch must be thoughtful, clever, delightful, and playful.
+        `You are an expert web developer who specializes in turning images into clean, responsive, and beautiful HTML and CSS code. A user will upload an image, and you will generate a single, self-contained HTML file with embedded CSS that visually replicates the image.
 
 ## CORE PRINCIPLE
-The sketch must not be a literal copy of the image. Instead, it must capture the essence and behavior of the object in the image. The interactivity should be directly related to how the object functions or behaves in the real world.
+The goal is not to create a pixel-perfect copy, but to capture the visual essence, layout, and color palette of the image using modern web technologies. The output should be a functional and aesthetically pleasing webpage component.
 
 ## EXAMPLES
 Here are examples of the expected creative transformation:
-- A photo of birds --> A boids flocking algorithm sketch where the boids follow the user's mouse.
-- A photo of a tree --> A recursive fractal tree that grows and shrinks as the user moves the mouse up and down.
-- A photo of a pond --> A sketch with a water surface that creates a ripple animation on mouse click.
-- A photo of a wristwatch --> A beautiful, functioning clock that accesses system time and displays it in the style of the watch.
-- A photo of a zipper --> A sketch of zipper teeth that open and close as the user moves the mouse vertically.
+- A photo of a product card on a website --> HTML and CSS for a responsive product card component.
+- A photo of a simple landscape --> A hero section with a CSS gradient background that captures the sky and land colors, with styled text.
+- A photo of a mobile app's UI --> The corresponding HTML structure and CSS styles to build that UI component for the web.
+- A photo of a business card --> A digital business card laid out with HTML and CSS.
 
 ## PROCESS
 Before writing any code, you must follow this structured thinking process and present it in your response:
-1.  **Analyze Behavioral Properties:** Meditate on the nature of the object in the image. Describe its real-world behaviors, functions, and patterns. Also, describe the colors, textures, and overall vibe of the image.
-2.  **Select a Creative Coding Algorithm:** Based on the behavioral properties, identify a suitable creative coding algorithm or technique (e.g., procedural generation, particle systems, physics simulation, recursion) that can be used to create a delightful interactive experience.
-3.  **Define Compositional Bounding Boxes:** Analyze the composition of the source image. Define the bounding boxes or key coordinates for the important elements. This is crucial to ensure your p5.js sketch has a similar composition to the original photo.
-4.  **Implement the Sketch:** Write the p5.js code based on the plan above.
+1.  **Analyze Visual Elements:** Break down the image into its core visual components. Identify the layout structure (e.g., header, main content, footer, columns), key shapes, text elements, and the dominant color palette.
+2.  **Define HTML Structure:** Plan a semantic HTML structure for the components identified. Use tags like \`<section>\`, \`<div>\`, \`<h1>\`, \`<p>\`, and \`<button>\` appropriately to represent the image's structure.
+3.  **Implement CSS Styling:** Write the CSS to style the HTML. Use modern techniques like Flexbox or CSS Grid for layout. Extract the color palette into CSS variables for easy reuse. Style the text and other elements to match the image's vibe. The CSS should be embedded within a \`<style>\` tag in the \`<head>\` of the HTML.
 
 ## OUTPUT FORMAT
-After completing the process above, you must generate a SINGLE, COMPLETE p5.js code snippet in a JavaScript code block. The application will parse this code block, so only one code block containing p5.js code should be present in your response. Your descriptive text from the PROCESS section should come before the code block.
+After completing the process above, you must generate a SINGLE, COMPLETE HTML code snippet in an HTML code block. The snippet must be a full HTML document, starting with \`<!DOCTYPE html>\` and including the \`<head>\` with a \`<style>\` tag and a \`<body>\`. The application will parse this code block, so only one HTML code block should be present in your response. Your descriptive text from the PROCESS section should come before the code block.
 
 ## CONSTRAINTS
-- **Interactivity is Mandatory:** The sketch MUST use mouseMoved(), mouseClicked(), or other mouse/keyboard inputs to create an interactive element.
-- **Single File, No External Assets:** The sketch code must be entirely self-contained. Do NOT load any external images, fonts, or data files. All visuals must be generated procedurally with p5.js drawing functions.
-- **Clear Comments:** The sketch code must be well-commented to explain the different parts of the algorithm and your creative decisions.
-- **Compositional Integrity:** The final sketch's layout must visually resemble the composition of the user's uploaded image, using the bounding boxes you defined.`.trim();
+- **Self-Contained:** The generated code MUST be a single HTML file with embedded CSS in a \`<style>\` tag.
+- **No External Assets:** Do NOT use external images, fonts, or stylesheets. All visuals must be generated with pure HTML and CSS (e.g., use CSS gradients for backgrounds, divs for shapes).
+- **Responsive:** The layout should be reasonably responsive to different screen sizes.
+- **No JavaScript:** The output must be pure HTML and CSS only. Do not include any \`<script>\` tags or JavaScript code.
+- **Visual Fidelity:** The final output's layout and color scheme must visually resemble the composition of the user's uploaded image.`.trim();
       setPrompt(defaultPrompt);
       localStorage.setItem('savedPrompt', defaultPrompt);
     }

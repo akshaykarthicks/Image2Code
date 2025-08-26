@@ -40,70 +40,14 @@ const CodePreview = ({ output, onCodeChange, fullResponse }) => {
     }
   };
 
-  const renderSketch = (code) => {
-    // Make sure we're working with a string
-    const codeString = typeof code === 'string' ? code : code.toString();
-
-    const wrappedCode = codeString.includes('function setup()') ? codeString : `
-      function setup() {
-        createCanvas(500, 500);
-        ${codeString}
-      }
-
-      function draw() {
-        // Add default draw function if not present
-        if (typeof window.draw !== 'function') {
-          window.draw = function() {};
-        }
-      }
-    `;
-
-    const formattedCodeResponse = `
-      <!DOCTYPE html>
-      <html lang="en">
-      <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
-        <title>p5.js Sketch</title>
-        <style>
-          body {
-            padding: 0;
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            overflow: hidden;
-          }
-          canvas {
-            max-width: 100% !important;
-            height: auto !important;
-          }
-        </style>
-      </head>
-      <body>
-        <script>
-          try {
-            ${wrappedCode}
-            // Immediately call setup if it hasn't been called
-            if (typeof window.setup === 'function') {
-              new p5();
-            }
-          } catch (error) {
-            console.error('Sketch error:', error);
-            document.body.innerHTML = '<div style="color: red; padding: 20px;"><h3>🔴 Error:</h3><pre>' + error.message + '</pre></div>';
-          }
-        </script>
-      </body>
-      </html>
-    `;
-
+  const renderPreview = (htmlCode) => {
+    // The AI now provides a full, self-contained HTML document.
+    // We can render it directly in the iframe.
     return (
       <div className="relative w-full h-[500px] bg-gray-50 rounded-lg overflow-hidden">
         <iframe
-          srcDoc={formattedCodeResponse}
-          title="p5.js Sketch"
+          srcDoc={htmlCode}
+          title="HTML Preview"
           width="100%"
           height="100%"
           style={{ border: "none" }}
@@ -113,8 +57,8 @@ const CodePreview = ({ output, onCodeChange, fullResponse }) => {
     );
   };
 
-  // Make sure we're passing the actual code string to renderSketch
-  const sketchCode = output?.code || '';
+  // Make sure we're passing the actual code string to renderPreview
+  const htmlCode = output?.code || '';
 
   return (
     <div className="mb-4 p-6 rounded-3xl bg-gray-100">
@@ -123,8 +67,8 @@ const CodePreview = ({ output, onCodeChange, fullResponse }) => {
           <div className="w-full h-[500px] rounded-lg overflow-hidden border">
             <Editor
               height="500px"
-              defaultLanguage="javascript"
-              value={sketchCode}
+              defaultLanguage="html"
+              value={htmlCode}
               onChange={(value) => onCodeChange(output.id, value)}
               theme="light"
               options={{
@@ -182,7 +126,7 @@ const CodePreview = ({ output, onCodeChange, fullResponse }) => {
             </ReactMarkdown>
           </div>
         ) : (
-          renderSketch(sketchCode)
+          renderPreview(htmlCode)
         )}
       </div>
 

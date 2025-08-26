@@ -9,10 +9,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@google/genai": "^0.7.0",
     "@tailwindcss/browser": "^4.1.12",
     "react-dom": "^19.1.1",
     "react": "^19.1.1",
+    "@google/genai": "^1.15.0",
     "lucide-react": "^0.541.0",
     "react-dropzone": "^14.3.8",
     "@monaco-editor/react": "^4.7.0",
