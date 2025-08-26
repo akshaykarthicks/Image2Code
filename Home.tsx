@@ -51,7 +51,8 @@ const SAMPLE_IMAGES = [
 ];
 
 const MODEL_NAME = 'gemini-2.5-flash';
-const ai = new GoogleGenAI({apiKey: process.env.GEMINI_API_KEY});
+// fix: Use API_KEY environment variable for Gemini API key as per guidelines.
+const ai = new GoogleGenAI({apiKey: process.env.API_KEY});
 
 // Helper function to generate code from image
 async function generateCodeFromImage(imageBase64, prompt, userInput) {
@@ -100,50 +101,34 @@ export default function Home() {
       setPrompt(savedPrompt);
     } else {
       const defaultPrompt =
-        `You are a creative coding expert who turns images into
-      clever code sketches using p5js. A user will upload an image and you will
-      generate a interactive p5js sketch that represents the image.
-      The code sketch always has some sort of interactive element that
-      connects to the nature of the object in the real world.
-      ## EXAMPLES
-      Here are some examples of what I mean by how the type of image could
-      be turned into a clever creative coding sketch to capture the essence of the image.
-      - A photo of birds --> a boids flocking algorithm sketch where the boids follow your mouse
-      - A photo of a tree --> a recursive fractal tree that grows as you move your mouse up and down
-      - A photo of a pond --> a sketch that has a ripple animation on mouse click
-      - A photo of a wristwatch --> beautiful functioning clock that
-      accesses system time and displays it like the wristwatch
-      - A photo of a lamp --> a sketch of the lamp, but when you click
-      the screen the lamp turns on and off
-      - A photo of a zipper --> a sketch representing the shapes of the zipper,
-      and when you move your mouse up and down the zipper opens and closes like a real zipper
-      ## PROCESS
-      To achieve creating this sketch, you reflect and
-      meditate on the nature of the object BEFORE picking an algorithmic
-      approach to represent the image. You are an agent that is thoughtful,
-      clever, delightful, and playful.
-      Before you start, think about the image and the best way to represent it in p5js.
-      1. Describe the behavioral properties of the image. List some ways it
-       behaves in the real world or some patterns it exhibits. Describe the
-       colors and vibe of the image as well.
-      2. Given the behavorial properties of the image, identify a common creative
-      coding algorithm that can be paired up to this image to make a delightful p5js sketch.
-      3. State the bounding boxes of the important parts of the composition
-      of the photo. We will need to use these bounding boxes to make sure our
-      composition of our sketch resembles the composition of the photo uploaded.
-      Our sketch's composition needs to resemble the composition of the uploaded photo.
-      4. Implement a algorithm in p5js, using the properties of the image described
-      earlier. Use either mouseMoved() or mouseClicked() to make it interactive.
-      Generate a SINGLE, COMPLETE code snippet. We parse out the response you generate,
-      so we should have only ONE code snippet that incorporates all of the information
-      from steps 1 (behavioral description), 2 (creative coding algorithm to bring this to life),
-      3 (bounding boxes to preserve compositional integrity).
-      ## EXECUTION
-      Complete all of these steps. When you write your code, be sure to leave clear
-      comments to describe the different parts of the code and what you are doing.
-      Do not EVER try to load in external images or any other libraries.
-      Everything must be self contained in the one file and code snippet.
-      And don't be too verbose.`.trim();
+        `You are a creative coding expert who turns images into clever code sketches using p5.js. A user will upload an image and you will generate an interactive p5.js sketch that represents the image. The code sketch must be thoughtful, clever, delightful, and playful.
+
+## CORE PRINCIPLE
+The sketch must not be a literal copy of the image. Instead, it must capture the essence and behavior of the object in the image. The interactivity should be directly related to how the object functions or behaves in the real world.
+
+## EXAMPLES
+Here are examples of the expected creative transformation:
+- A photo of birds --> A boids flocking algorithm sketch where the boids follow the user's mouse.
+- A photo of a tree --> A recursive fractal tree that grows and shrinks as the user moves the mouse up and down.
+- A photo of a pond --> A sketch with a water surface that creates a ripple animation on mouse click.
+- A photo of a wristwatch --> A beautiful, functioning clock that accesses system time and displays it in the style of the watch.
+- A photo of a zipper --> A sketch of zipper teeth that open and close as the user moves the mouse vertically.
+
+## PROCESS
+Before writing any code, you must follow this structured thinking process and present it in your response:
+1.  **Analyze Behavioral Properties:** Meditate on the nature of the object in the image. Describe its real-world behaviors, functions, and patterns. Also, describe the colors, textures, and overall vibe of the image.
+2.  **Select a Creative Coding Algorithm:** Based on the behavioral properties, identify a suitable creative coding algorithm or technique (e.g., procedural generation, particle systems, physics simulation, recursion) that can be used to create a delightful interactive experience.
+3.  **Define Compositional Bounding Boxes:** Analyze the composition of the source image. Define the bounding boxes or key coordinates for the important elements. This is crucial to ensure your p5.js sketch has a similar composition to the original photo.
+4.  **Implement the Sketch:** Write the p5.js code based on the plan above.
+
+## OUTPUT FORMAT
+After completing the process above, you must generate a SINGLE, COMPLETE p5.js code snippet in a JavaScript code block. The application will parse this code block, so only one code block containing p5.js code should be present in your response. Your descriptive text from the PROCESS section should come before the code block.
+
+## CONSTRAINTS
+- **Interactivity is Mandatory:** The sketch MUST use mouseMoved(), mouseClicked(), or other mouse/keyboard inputs to create an interactive element.
+- **Single File, No External Assets:** The sketch code must be entirely self-contained. Do NOT load any external images, fonts, or data files. All visuals must be generated procedurally with p5.js drawing functions.
+- **Clear Comments:** The sketch code must be well-commented to explain the different parts of the algorithm and your creative decisions.
+- **Compositional Integrity:** The final sketch's layout must visually resemble the composition of the user's uploaded image, using the bounding boxes you defined.`.trim();
       setPrompt(defaultPrompt);
       localStorage.setItem('savedPrompt', defaultPrompt);
     }
@@ -166,23 +151,26 @@ export default function Home() {
     const reader = new FileReader();
 
     reader.onload = (event) => {
-      const img = document.createElement('img');
-      img.src = event.target.result;
+      // fix(Home.tsx:154): Type 'string | ArrayBuffer' is not assignable to type 'string'.
+      if (typeof event.target?.result === 'string') {
+        const img = document.createElement('img');
+        img.src = event.target.result;
 
-      img.onload = () => {
-        const canvas = document.createElement('canvas');
-        const scaleFactor = 512 / img.width;
-        canvas.width = 512;
-        canvas.height = img.height * scaleFactor;
-        const ctx = canvas.getContext('2d');
-        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-        setImageBase64(canvas.toDataURL());
-        setImageDetails({
-          name: file.name,
-          size: `${(file.size / 1024).toFixed(2)}kB`,
-          type: file.type,
-        });
-      };
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          const scaleFactor = 512 / img.width;
+          canvas.width = 512;
+          canvas.height = img.height * scaleFactor;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+          setImageBase64(canvas.toDataURL());
+          setImageDetails({
+            name: file.name,
+            size: `${(file.size / 1024).toFixed(2)}kB`,
+            type: file.type,
+          });
+        };
+      }
     };
 
     reader.readAsDataURL(file);
@@ -190,7 +178,8 @@ export default function Home() {
 
   const {getRootProps, getInputProps, isDragActive} = useDropzone({
     onDrop,
-    accept: 'image/*',
+    // fix(Home.tsx:177): Type 'string' is not assignable to type 'Accept'.
+    accept: {'image/*': []},
   });
 
   const generateCode = async () => {
@@ -201,18 +190,14 @@ export default function Home() {
     setOutputs([]);
 
     try {
+      // fix(Home.tsx:189): Expected 1-3 arguments, but got 0.
       const requests = Array(concurrentRequests)
-        .fill()
+        .fill(0)
         .map(() => generateCodeFromImage(imageBase64, prompt, userInput));
 
       const results = await Promise.all(requests);
 
-      // Check if any requests resulted in an error
-      if (results.some((result) => result.error)) {
-        setShowErrorModal(true);
-        return;
-      }
-
+      // fix(Home.tsx:195): Property 'error' does not exist on type '{ fullResponse: string; code: string; }'. This check is removed as Promise.all rejection is handled by the surrounding catch block.
       setOutputs(
         results.map((result, index) => ({
           id: index + 1,
@@ -279,18 +264,21 @@ export default function Home() {
       const reader = new FileReader();
 
       reader.onload = (event) => {
-        const img = document.createElement('img');
-        img.src = event.target.result;
+        // fix(Home.tsx:267): Type 'string | ArrayBuffer' is not assignable to type 'string'.
+        if (typeof event.target?.result === 'string') {
+          const img = document.createElement('img');
+          img.src = event.target.result;
 
-        img.onload = () => {
-          const canvas = document.createElement('canvas');
-          const scaleFactor = 512 / img.width;
-          canvas.width = 512;
-          canvas.height = img.height * scaleFactor;
-          const ctx = canvas.getContext('2d');
-          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-          setImageBase64(canvas.toDataURL());
-        };
+          img.onload = () => {
+            const canvas = document.createElement('canvas');
+            const scaleFactor = 512 / img.width;
+            canvas.width = 512;
+            canvas.height = img.height * scaleFactor;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+            setImageBase64(canvas.toDataURL());
+          };
+        }
       };
 
       reader.readAsDataURL(blob);
@@ -441,8 +429,9 @@ export default function Home() {
               <div className="w-full md:w-6/12 py-4 md:py-12 px-3 animate-slide-in md:overflow-y-auto md:h-full">
                 {loading
                   ? // Loading skeletons for code previews
+                    // fix(Home.tsx:429): Expected 1-3 arguments, but got 0.
                     Array(concurrentRequests)
-                      .fill()
+                      .fill(0)
                       .map((_, index) => (
                         <div
                           key={`skeleton-preview-${Date.now()}-${index}`}
