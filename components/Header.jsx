@@ -19,7 +19,7 @@ const Header = () => {
               rel="noopener noreferrer"
               className="underline hover:text-gray-800 transition-colors"
             >
-              Gemini 2.0
+              Gemini 2.5 Flash
             </a>
           </span>
         </div>

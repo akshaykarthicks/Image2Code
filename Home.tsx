@@ -69,7 +69,7 @@ async function generateCodeFromImage(imageBase64, prompt, userInput) {
 
   const result = await ai.models.generateContent({
     model: MODEL_NAME,
-    contents: [{role: 'user', parts: [{text: finalPrompt}, image]}],
+    contents: {parts: [{text: finalPrompt}, image]},
   });
   const response = result.text;
 
@@ -254,6 +254,145 @@ After completing the process above, you must generate a SINGLE, COMPLETE HTML co
     }
   };
 
+  const uploaderSection = (
+    <>
+      <section className="flex flex-col bg-gray-100 rounded-2xl p-4">
+        <div
+          {...getRootProps()}
+          className={`border-2 border-dashed bg-white rounded-2xl m-4 min-h-96 h-fit flex
+        flex-col items-center justify-center cursor-pointer hover:border-gray-400 transition-colors ${
+          imageBase64 ? 'border-none p-0' : 'border-gray-300'
+        }`}>
+          <input {...getInputProps()} />
+          {imageBase64 ? (
+            <img
+              src={imageBase64}
+              alt="Uploaded"
+              className="max-h-full max-w-full object-contain rounded-2xl"
+            />
+          ) : (
+            <div className="flex flex-col items-center justify-center text-center p-8">
+              <Upload className="w-12 h-12 text-gray-400 mb-4" />
+              <h3 className="font-semibold text-gray-700">
+                Drop your image here
+              </h3>
+              <p className="text-sm text-gray-500">
+                or{' '}
+                <span className="text-blue-600 font-semibold">
+                  browse files
+                </span>
+              </p>
+            </div>
+          )}
+        </div>
+        <div className="max-w-full mb-4">
+          <div className="flex overflow-x-auto gap-2 py-1 mx-4">
+            {SAMPLE_IMAGES.map((image) => (
+              <button
+                key={image}
+                type="button"
+                onClick={() => handleSampleSelect(image)}
+                className={`flex-shrink-0 w-14 h-14 bg-white rounded-lg hover:scale-110 transition-all ${
+                  selectedSample === image
+                    ? 'border-blue-500 ring-2 ring-blue-200'
+                    : 'border-gray-300'
+                }`}>
+                <img
+                  src={`https://www.gstatic.com/aistudio/starter-apps/code/samples/${image}`}
+                  alt={image}
+                  className="w-full h-full object-cover rounded-lg"
+                />
+              </button>
+            ))}
+          </div>
+        </div>
+      </section>
+      <section className="mt-4 space-y-4 bg-gray-100 rounded-2xl p-4">
+        <div>
+          <button
+            type="button"
+            onClick={() => setShowSamples(!showSamples)}
+            className="flex items-center gap-2 text-sm text-gray-600 hover:text-gray-800 transition-colors">
+            {/* <Settings size={16} /> */}
+            <span className="font-bold">Advanced</span>
+            <ChevronDown
+              size={16}
+              className={`transform transition-transform ${
+                showSamples ? 'rotate-180' : ''
+              }`}
+            />
+          </button>
+          {showSamples && (
+            <div className="my-2 rounded-lg">
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <Layers size={14} className="text-gray-600" />
+                    <label
+                      htmlFor="concurrent-requests"
+                      className="text-sm font-medium text-gray-700">
+                      Concurrent Requests: {concurrentRequests}
+                    </label>
+                  </div>
+                  <input
+                    id="concurrent-requests"
+                    type="range"
+                    min="1"
+                    max="10"
+                    value={concurrentRequests}
+                    onChange={(e) =>
+                      setConcurrentRequests(Number(e.target.value))
+                    }
+                    className="w-1/2"
+                  />
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setShowPrompt(!showPrompt)}
+                  className="flex items-center gap-2 text-sm text-gray-600 hover:text-gray-800 transition-colors">
+                  <Pen size={14} />
+                  <span>Edit System Prompt</span>
+                  <ChevronDown
+                    size={16}
+                    className={`transform transition-transform ${
+                      showPrompt ? 'rotate-180' : ''
+                    }`}
+                  />
+                </button>
+                {showPrompt && (
+                  <textarea
+                    value={prompt}
+                    onChange={(e) => setPrompt(e.target.value)}
+                    className="w-full h-64 p-2 border rounded-lg font-mono text-sm mt-2 bg-white text-gray-900"
+                    placeholder="Enter your prompt here..."
+                  />
+                )}
+              </div>
+            </div>
+          )}
+        </div>
+      </section>
+      <section className="mt-4">
+        <button
+          type="button"
+          onClick={generateCode}
+          className="px-4 py-4 bg-gray-800 text-white rounded-2xl mb-8
+          hover:bg-gray-900  transition-colors w-full disabled:bg-gray-300 disabled:cursor-not-allowed
+          flex items-center justify-center gap-2 font-bold"
+          disabled={!imageBase64 || loading}>
+          {/* <Send size={16} className={loading ? 'opacity-50' : ''} /> */}
+          <span>
+            {loading
+              ? 'Generating...'
+              : `Generate ${concurrentRequests} Code Snippet${
+                  concurrentRequests > 1 ? 's' : ''
+                }`}
+          </span>
+        </button>
+      </section>
+    </>
+  );
+
   return (
     <>
       <div className="fixed inset-0 bg-white mt-[0px] sm:mt-0">
@@ -263,136 +402,54 @@ After completing the process above, you must generate a SINGLE, COMPLETE HTML co
           onClose={() => setShowErrorModal(false)}
         />
         <div className="absolute inset-0 top-[57px] sm:top-[73px] overflow-y-auto overscroll-y-contain -webkit-overflow-scrolling-touch">
-          <div
-            className={`flex flex-col md:flex-row gap-4 max-w-7xl mx-auto ${!hasStartedGenerating ? 'justify-center' : ''} md:h-[calc(100vh-73px)]`}>
-            <div
-              className={`w-full md:w-6/12 py-4 md:py-12 px-3 ${!hasStartedGenerating ? 'md:max-w-2xl mx-auto' : ''} md:overflow-y-auto`}>
-              <section className="flex flex-col bg-gray-100 rounded-2xl p-4">
-                <div
-                  {...getRootProps()}
-                  className={`border-2 border-dashed bg-gray-100 rounded-2xl m-4 min-h-96 h-fit flex
-                flex-col items-center justify-center cursor-pointer hover:border-gray-400 transition-colors ${imageBase64 ? 'border-none' : 'border-gray-300'}`}>
-                  <input {...getInputProps()} />
-                  {imageBase64 ? (
-                    <img
-                      src={imageBase64}
-                      alt="Uploaded"
-                      className="max-h-full max-w-full object-contain rounded-2xl"
-                    />
-                  ) : (
-                    <>
-                      <Upload className="w-12 h-12 text-gray-400 mb-4" />
-                      <p className="text-gray-400 text-center px-4">
-                        {isDragActive
-                          ? 'Drop the image here'
-                          : 'Drag & drop an image here, or click to select one'}
-                      </p>
-                    </>
-                  )}
+          {!hasStartedGenerating ? (
+            <div className="max-w-7xl mx-auto p-4 sm:p-8">
+              <div className="grid md:grid-cols-2 gap-12 items-center min-h-[calc(100vh-73px-4rem)]">
+                {/* Left Column */}
+                <div className="flex flex-col">
+                  <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
+                    Turn any image into code
+                  </h1>
+                  <p className="mt-6 text-lg leading-8 text-gray-600">
+                    From design mockups to screenshots, upload an image and let
+                    AI magically transform it into clean, responsive HTML and
+                    CSS.
+                  </p>
+                  <div className="mt-10">{uploaderSection}</div>
                 </div>
-                <div className="max-w-full mb-4">
-                  <div className="flex overflow-x-auto gap-2 py-1 mx-4">
+
+                {/* Right Column */}
+                <div className="hidden md:block p-8 bg-gray-50 rounded-3xl">
+                  <h2 className="text-lg font-semibold text-gray-800 mb-4 text-center">
+                    Or try one of our samples
+                  </h2>
+                  <div className="grid grid-cols-2 gap-4">
                     {SAMPLE_IMAGES.map((image) => (
                       <button
                         key={image}
                         type="button"
                         onClick={() => handleSampleSelect(image)}
-                        className={`flex-shrink-0 w-14 h-14 bg-white rounded-lg hover:scale-110 transition-all ${
+                        className={`rounded-xl overflow-hidden transition-all duration-200 aspect-square ${
                           selectedSample === image
-                            ? 'border-blue-500 ring-2 ring-blue-200'
-                            : 'border-gray-300'
+                            ? 'ring-4 ring-blue-500 ring-offset-2'
+                            : 'hover:scale-105'
                         }`}>
                         <img
                           src={`https://www.gstatic.com/aistudio/starter-apps/code/samples/${image}`}
                           alt={image}
-                          className="w-full h-full object-cover rounded-lg"
+                          className="w-full h-full object-cover"
                         />
                       </button>
                     ))}
                   </div>
                 </div>
-              </section>
-              <section className="mt-4 space-y-4 bg-gray-100 rounded-2xl p-4">
-                <div>
-                  <button
-                    type="button"
-                    onClick={() => setShowSamples(!showSamples)}
-                    className="flex items-center gap-2 text-sm text-gray-600 hover:text-gray-800 transition-colors">
-                    {/* <Settings size={16} /> */}
-                    <span className="font-bold">Advanced</span>
-                    <ChevronDown
-                      size={16}
-                      className={`transform transition-transform ${
-                        showSamples ? 'rotate-180' : ''
-                      }`}
-                    />
-                  </button>
-                  {showSamples && (
-                    <div className="my-2 rounded-lg">
-                      <div className="space-y-2">
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-2">
-                            <Layers size={14} className="text-gray-600" />
-                            <label
-                              htmlFor="concurrent-requests"
-                              className="text-sm font-medium text-gray-700">
-                              Concurrent Requests: {concurrentRequests}
-                            </label>
-                          </div>
-                          <input
-                            id="concurrent-requests"
-                            type="range"
-                            min="1"
-                            max="10"
-                            value={concurrentRequests}
-                            onChange={(e) =>
-                              setConcurrentRequests(Number(e.target.value))
-                            }
-                            className="w-1/2"
-                          />
-                        </div>
-                        <button
-                          type="button"
-                          onClick={() => setShowPrompt(!showPrompt)}
-                          className="flex items-center gap-2 text-sm text-gray-600 hover:text-gray-800 transition-colors">
-                          <Pen size={14} />
-                          <span>Edit System Prompt</span>
-                          <ChevronDown
-                            size={16}
-                            className={`transform transition-transform ${showPrompt ? 'rotate-180' : ''}`}
-                          />
-                        </button>
-                        {showPrompt && (
-                          <textarea
-                            value={prompt}
-                            onChange={(e) => setPrompt(e.target.value)}
-                            className="w-full h-64 p-2 border rounded-lg font-mono text-sm mt-2 bg-white text-gray-900"
-                            placeholder="Enter your prompt here..."
-                          />
-                        )}
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </section>
-              <section className="mt-4">
-                <button
-                  type="button"
-                  onClick={generateCode}
-                  className="px-4 py-4 bg-gray-800 text-white rounded-2xl mb-8
-                  hover:bg-gray-900  transition-colors w-full disabled:bg-gray-300 disabled:cursor-not-allowed
-                  flex items-center justify-center gap-2 font-bold"
-                  disabled={!imageBase64 || loading}>
-                  {/* <Send size={16} className={loading ? 'opacity-50' : ''} /> */}
-                  <span>
-                    {loading
-                      ? 'Generating...'
-                      : `Generate ${concurrentRequests} Code Snippet${concurrentRequests > 1 ? 's' : ''}`}
-                  </span>
-                </button>
-              </section>
+              </div>
             </div>
-            {hasStartedGenerating && (
+          ) : (
+            <div className="flex flex-col md:flex-row gap-4 max-w-7xl mx-auto md:h-[calc(100vh-73px)]">
+              <div className="w-full md:w-6/12 py-4 md:py-12 px-3 md:overflow-y-auto">
+                {uploaderSection}
+              </div>
               <div className="w-full md:w-6/12 py-4 md:py-12 px-3 animate-slide-in md:overflow-y-auto md:h-full">
                 {loading
                   ? // Loading skeletons for code previews
@@ -419,8 +476,8 @@ After completing the process above, you must generate a SINGLE, COMPLETE HTML co
                       />
                     ))}
               </div>
-            )}
-          </div>
+            </div>
+          )}
         </div>
       </div>
     </>
