@@ -1,0 +1,212 @@
+
+> image-to-html-nextjs@0.1.0 dev
+> next dev
+
+ ⚠ Port 3000 is in use, trying 3001 instead.
+  ▲ Next.js 14.2.4
+  - Local:        http://localhost:3001
+  - Environments: .env.local
+
+ ✓ Starting...
+ ✓ Ready in 2.5s
+Error: ENOENT: no such file or directory, scandir '/app/pages'
+    at async Object.readdir (node:internal/fs/promises:955:18)
+    at async /app/node_modules/next/dist/lib/recursive-readdir.js:39:29
+    at async Promise.all (index 0)
+    at async recursiveReadDir (/app/node_modules/next/dist/lib/recursive-readdir.js:32:25)
+    at async /app/node_modules/next/dist/server/future/route-matcher-providers/dev/helpers/file-reader/batched-file-reader.js:71:25
+    at async Promise.all (index 0)
+    at async BatchedFileReader.load (/app/node_modules/next/dist/server/future/route-matcher-providers/dev/helpers/file-reader/batched-file-reader.js:67:25)
+    at async /app/node_modules/next/dist/server/future/route-matcher-providers/dev/helpers/file-reader/batched-file-reader.js:41:26 {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'scandir',
+  path: '/app/pages'
+}
+ ⨯ unhandledRejection: Error: ENOENT: no such file or directory, scandir '/app/pages'
+    at async Object.readdir (node:internal/fs/promises:955:18)
+    at async /app/node_modules/next/dist/lib/recursive-readdir.js:39:29
+    at async Promise.all (index 0)
+    at async recursiveReadDir (/app/node_modules/next/dist/lib/recursive-readdir.js:32:25)
+    at async /app/node_modules/next/dist/server/future/route-matcher-providers/dev/helpers/file-reader/batched-file-reader.js:71:25
+    at async Promise.all (index 0)
+    at async BatchedFileReader.load (/app/node_modules/next/dist/server/future/route-matcher-providers/dev/helpers/file-reader/batched-file-reader.js:67:25)
+    at async /app/node_modules/next/dist/server/future/route-matcher-providers/dev/helpers/file-reader/batched-file-reader.js:41:26 {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'scandir',
+  path: '/app/pages'
+}
+ ⨯ unhandledRejection: Error: ENOENT: no such file or directory, scandir '/app/pages'
+    at async Object.readdir (node:internal/fs/promises:955:18)
+    at async /app/node_modules/next/dist/lib/recursive-readdir.js:39:29
+    at async Promise.all (index 0)
+    at async recursiveReadDir (/app/node_modules/next/dist/lib/recursive-readdir.js:32:25)
+    at async /app/node_modules/next/dist/server/future/route-matcher-providers/dev/helpers/file-reader/batched-file-reader.js:71:25
+    at async Promise.all (index 0)
+    at async BatchedFileReader.load (/app/node_modules/next/dist/server/future/route-matcher-providers/dev/helpers/file-reader/batched-file-reader.js:67:25)
+    at async /app/node_modules/next/dist/server/future/route-matcher-providers/dev/helpers/file-reader/batched-file-reader.js:41:26 {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'scandir',
+  path: '/app/pages'
+}
+ ⚠ Found a change in next.config.mjs. Restarting the server to apply the changes...
+  ▲ Next.js 14.2.4
+  - Local:        http://localhost:3000
+  - Environments: .env.local
+
+ ✓ Starting...
+ ✓ Ready in 1898ms
+Error: ENOENT: no such file or directory, scandir '/app/pages'
+    at async Object.readdir (node:internal/fs/promises:955:18)
+    at async /app/node_modules/next/dist/lib/recursive-readdir.js:39:29
+    at async Promise.all (index 0)
+    at async recursiveReadDir (/app/node_modules/next/dist/lib/recursive-readdir.js:32:25)
+    at async /app/node_modules/next/dist/server/future/route-matcher-providers/dev/helpers/file-reader/batched-file-reader.js:71:25
+    at async Promise.all (index 0)
+    at async BatchedFileReader.load (/app/node_modules/next/dist/server/future/route-matcher-providers/dev/helpers/file-reader/batched-file-reader.js:67:25)
+    at async /app/node_modules/next/dist/server/future/route-matcher-providers/dev/helpers/file-reader/batched-file-reader.js:41:26 {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'scandir',
+  path: '/app/pages'
+}
+ ⨯ unhandledRejection: Error: ENOENT: no such file or directory, scandir '/app/pages'
+    at async Object.readdir (node:internal/fs/promises:955:18)
+    at async /app/node_modules/next/dist/lib/recursive-readdir.js:39:29
+    at async Promise.all (index 0)
+    at async recursiveReadDir (/app/node_modules/next/dist/lib/recursive-readdir.js:32:25)
+    at async /app/node_modules/next/dist/server/future/route-matcher-providers/dev/helpers/file-reader/batched-file-reader.js:71:25
+    at async Promise.all (index 0)
+    at async BatchedFileReader.load (/app/node_modules/next/dist/server/future/route-matcher-providers/dev/helpers/file-reader/batched-file-reader.js:67:25)
+    at async /app/node_modules/next/dist/server/future/route-matcher-providers/dev/helpers/file-reader/batched-file-reader.js:41:26 {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'scandir',
+  path: '/app/pages'
+}
+ ⨯ unhandledRejection: Error: ENOENT: no such file or directory, scandir '/app/pages'
+    at async Object.readdir (node:internal/fs/promises:955:18)
+    at async /app/node_modules/next/dist/lib/recursive-readdir.js:39:29
+    at async Promise.all (index 0)
+    at async recursiveReadDir (/app/node_modules/next/dist/lib/recursive-readdir.js:32:25)
+    at async /app/node_modules/next/dist/server/future/route-matcher-providers/dev/helpers/file-reader/batched-file-reader.js:71:25
+    at async Promise.all (index 0)
+    at async BatchedFileReader.load (/app/node_modules/next/dist/server/future/route-matcher-providers/dev/helpers/file-reader/batched-file-reader.js:67:25)
+    at async /app/node_modules/next/dist/server/future/route-matcher-providers/dev/helpers/file-reader/batched-file-reader.js:41:26 {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'scandir',
+  path: '/app/pages'
+}
+ ⚠ Found a change in next.config.mjs. Restarting the server to apply the changes...
+ ⚠ Port 3000 is in use, trying 3001 instead.
+  ▲ Next.js 14.2.4
+  - Local:        http://localhost:3001
+  - Environments: .env.local
+
+ ✓ Starting...
+Error: > Couldn't find any `pages` or `app` directory. Please create one under the project root
+    at findPagesDir (/app/node_modules/next/dist/lib/find-pages-dir.js:42:15)
+    at initialize (/app/node_modules/next/dist/server/lib/router-server.js:75:69)
+    at async Server.<anonymous> (/app/node_modules/next/dist/server/lib/start-server.js:249:36)
+[?25h
+-file-reader.js:71:25
+    at async Promise.all (index 0)
+    at async BatchedFileReader.load (/app/node_modules/next/dist/server/future/route-matcher-providers/dev/helpers/file-reader/batched-file-reader.js:67:25)
+    at async /app/node_modules/next/dist/server/future/route-matcher-providers/dev/helpers/file-reader/batched-file-reader.js:41:26 {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'scandir',
+  path: '/app/pages'
+}
+ ⨯ unhandledRejection: Error: ENOENT: no such file or directory, scandir '/app/pages'
+    at async Object.readdir (node:internal/fs/promises:955:18)
+    at async /app/node_modules/next/dist/lib/recursive-readdir.js:39:29
+    at async Promise.all (index 0)
+    at async recursiveReadDir (/app/node_modules/next/dist/lib/recursive-readdir.js:32:25)
+    at async /app/node_modules/next/dist/server/future/route-matcher-providers/dev/helpers/file-reader/batched-file-reader.js:71:25
+    at async Promise.all (index 0)
+    at async BatchedFileReader.load (/app/node_modules/next/dist/server/future/route-matcher-providers/dev/helpers/file-reader/batched-file-reader.js:67:25)
+    at async /app/node_modules/next/dist/server/future/route-matcher-providers/dev/helpers/file-reader/batched-file-reader.js:41:26 {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'scandir',
+  path: '/app/pages'
+}
+ ⨯ unhandledRejection: Error: ENOENT: no such file or directory, scandir '/app/pages'
+    at async Object.readdir (node:internal/fs/promises:955:18)
+    at async /app/node_modules/next/dist/lib/recursive-readdir.js:39:29
+    at async Promise.all (index 0)
+    at async recursiveReadDir (/app/node_modules/next/dist/lib/recursive-readdir.js:32:25)
+    at async /app/node_modules/next/dist/server/future/route-matcher-providers/dev/helpers/file-reader/batched-file-reader.js:71:25
+    at async Promise.all (index 0)
+    at async BatchedFileReader.load (/app/node_modules/next/dist/server/future/route-matcher-providers/dev/helpers/file-reader/batched-file-reader.js:67:25)
+    at async /app/node_modules/next/dist/server/future/route-matcher-providers/dev/helpers/file-reader/batched-file-reader.js:41:26 {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'scandir',
+  path: '/app/pages'
+}
+ ⚠ Found a change in next.config.mjs. Restarting the server to apply the changes...
+ ⚠ Port 3000 is in use, trying 3001 instead.
+  ▲ Next.js 14.2.4
+  - Local:        http://localhost:3001
+  - Environments: .env.local
+
+ ✓ Starting...
+ ✓ Ready in 1895ms
+Error: ENOENT: no such file or directory, scandir '/app/pages'
+    at async Object.readdir (node:internal/fs/promises:955:18)
+    at async /app/node_modules/next/dist/lib/recursive-readdir.js:39:29
+    at async Promise.all (index 0)
+    at async recursiveReadDir (/app/node_modules/next/dist/lib/recursive-readdir.js:32:25)
+    at async /app/node_modules/next/dist/server/future/route-matcher-providers/dev/helpers/file-reader/batched-file-reader.js:71:25
+    at async Promise.all (index 0)
+    at async BatchedFileReader.load (/app/node_modules/next/dist/server/future/route-matcher-providers/dev/helpers/file-reader/batched-file-reader.js:67:25)
+    at async /app/node_modules/next/dist/server/future/route-matcher-providers/dev/helpers/file-reader/batched-file-reader.js:41:26 {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'scandir',
+  path: '/app/pages'
+}
+ ⨯ unhandledRejection: Error: ENOENT: no such file or directory, scandir '/app/pages'
+    at async Object.readdir (node:internal/fs/promises:955:18)
+    at async /app/node_modules/next/dist/lib/recursive-readdir.js:39:29
+    at async Promise.all (index 0)
+    at async recursiveReadDir (/app/node_modules/next/dist/lib/recursive-readdir.js:32:25)
+    at async /app/node_modules/next/dist/server/future/route-matcher-providers/dev/helpers/file-reader/batched-file-reader.js:71:25
+    at async Promise.all (index 0)
+    at async BatchedFileReader.load (/app/node_modules/next/dist/server/future/route-matcher-providers/dev/helpers/file-reader/batched-file-reader.js:67:25)
+    at async /app/node_modules/next/dist/server/future/route-matcher-providers/dev/helpers/file-reader/batched-file-reader.js:41:26 {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'scandir',
+  path: '/app/pages'
+}
+ ⨯ unhandledRejection: Error: ENOENT: no such file or directory, scandir '/app/pages'
+    at async Object.readdir (node:internal/fs/promises:955:18)
+    at async /app/node_modules/next/dist/lib/recursive-readdir.js:39:29
+    at async Promise.all (index 0)
+    at async recursiveReadDir (/app/node_modules/next/dist/lib/recursive-readdir.js:32:25)
+    at async /app/node_modules/next/dist/server/future/route-matcher-providers/dev/helpers/file-reader/batched-file-reader.js:71:25
+    at async Promise.all (index 0)
+    at async BatchedFileReader.load (/app/node_modules/next/dist/server/future/route-matcher-providers/dev/helpers/file-reader/batched-file-reader.js:67:25)
+    at async /app/node_modules/next/dist/server/future/route-matcher-providers/dev/helpers/file-reader/batched-file-reader.js:41:26 {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'scandir',
+  path: '/app/pages'
+}
+ ⚠ Found a change in next.config.mjs. Restarting the server to apply the changes...
+  ▲ Next.js 14.2.4
+  - Local:        http://localhost:3000
+  - Environments: .env.local
+
+ ✓ Starting...
+Error: > Couldn't find any `pages` or `app` directory. Please create one under the project root
+    at findPagesDir (/app/node_modules/next/dist/lib/find-pages-dir.js:42:15)
+    at initialize (/app/node_modules/next/dist/server/lib/router-server.js:75:69)
+    at async Server.<anonymous> (/app/node_modules/next/dist/server/lib/start-server.js:249:36)
+[?25h
